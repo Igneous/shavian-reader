@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shavian Reader · Amerilex + ReadLex</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.png">
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="masthead">
+    <span class="sh">𐑖𐑱𐑝𐑾𐑯</span>
+    <h1>Shavian Reader</h1>
+  </div>
+  <p class="tagline">Per-letter IPA and letter names from <span class="mono">shavian.info</span> · word lookup against Amerilex (American) and ReadLex (British). Words containing Shavian are scanned and rendered; everything else is passed through.</p>
+  <div class="inputbox">
+    <div id="input" contenteditable="true" spellcheck="false" role="textbox" aria-multiline="true" aria-label="Text to transliterate">𐑢𐑧𐑯𐑑 𐑑 𐑞 𐑟𐑵 𐑑𐑩𐑛𐑱</div>
+    <div class="dicts">
+      <span class="dl">Dictionaries</span>
+      <label class="dict-toggle on" id="tg-amer"><input type="checkbox" data-dict="amer" checked> Amerilex <span class="reg">American</span></label>
+      <label class="dict-toggle" id="tg-read"><input type="checkbox" data-dict="read"> ReadLex <span class="reg">British</span></label>
+      <span class="dl" style="margin-left:.8rem">Input</span>
+      <label class="dict-toggle on" id="tg-kbd"><input type="checkbox" id="cb-kbd" checked> Onscreen keyboard</label>
+      <select id="kbd-pick" aria-label="Keyboard layout">
+        <option value="english_shavian_jafl" selected>Shaw JAFL</option>
+        <option value="english_shavian_igc">Imperial</option>
+        <option value="english_shavian_qwerty">QWERTY</option>
+      </select>
+      <label class="dict-toggle" id="tg-lat"><input type="checkbox" id="cb-lat"> Latin lookup <span class="reg">Eng → Shaw</span></label>
+    </div>
+    <div class="hint">
+      <p>Letter class is color-coded: <span style="color:var(--tall)">tall</span> (voiceless), <span style="color:var(--deep)">deep</span> (voiced), <span style="color:var(--short)">short</span> (vowels, nasals, liquids), <span style="color:var(--compound)">compound</span> (vowel+R).</p>
+      <button id="legendBtn" aria-expanded="false">Show alphabet</button>
+    </div>
+  </div>
+  <div id="status">loading dictionaries…</div>
+  <section id="legend" aria-label="Shavian alphabet chart"><h2>The 48 letters</h2><div id="legendBody"></div></section>
+</header>
+
+<main id="results" aria-live="polite"></main>
+<div id="popover" aria-hidden="true"></div>
+
+<footer>Alphabet data: shavian.info/alphabet (Androcles reading key). Dictionaries: amerilex.tsv and the Kingsley Read Lexicon (ReadLex).</footer>
+</div>
+
+<script src="vendor/keymanweb.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
