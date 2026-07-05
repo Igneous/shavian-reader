@@ -457,16 +457,13 @@ async function initKeyman(){
 kbdPick.addEventListener('change', () => {
   if(kmwState !== 'ready') return;
   keyman.setKeyboardForControl(editor, kbdPick.value, 'en-shaw');
-  if(!cbKbd.checked) return;
-  // defer: the select reclaims focus as its dropdown closes, which would undo
-  // an immediate editor.focus(). Activation only completes for the focused
-  // control; refocus, await it, then re-show the OSK.
-  setTimeout(async () => {
-    editor.focus();
-    try{ await keyman.setActiveKeyboard('Keyboard_' + kbdPick.value, 'en-shaw'); }
-    catch(err){ document.getElementById('status').textContent += ' · keyboard switch failed: ' + err.message; return; }
-    oskShow(true);
-  }, 0);
+  // don't fight the native dropdown over focus (its popup can hold system
+  // focus without DOM events). Force a clean blur; the user's next click
+  // into the editor is a real blur->focus transition, which reliably
+  // activates the newly bound (preloaded) layout.
+  editor.blur();
+  kbdPick.blur();
+  oskShow(false);
 });
 
 function oskShow(on){
