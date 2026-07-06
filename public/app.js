@@ -313,6 +313,7 @@ function coreKnown(c){
   return activeDicts().length ? false : null;
 }
 
+let lastHl = null;
 function highlight(){
   const text = getText();
   const focused = document.activeElement === editor;
@@ -329,6 +330,11 @@ function highlight(){
     const cls = known === null ? '' : known ? ' hit' : ' miss';
     html += '<span class="tok' + cls + '" data-type="' + c.type + '" data-namer="' + (c.namer?1:0) + '" data-core="' + esc(c.core) + '">' + esc(tok) + '</span>';
   }
+  // no-op rewrites destroy the user's selection (setCaret restores only a
+  // collapsed caret) -- KMW's context sync mutates the DOM without changing
+  // text, e.g. right after ctrl+A. Skip when nothing would change.
+  if(html === lastHl) return;
+  lastHl = html;
   obs.disconnect();
   editor.innerHTML = html;
   if(off !== null) setCaret(off);
