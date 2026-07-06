@@ -355,7 +355,18 @@ function showPop(el){
 
 editor.addEventListener('mouseover', e => { const el = e.target.closest('.tok'); if(el) showPop(el); });
 editor.addEventListener('mouseout', e => { if(e.target.closest('.tok')) hidePop(); });
-editor.addEventListener('click', e => { const el = e.target.closest('.tok'); if(el) showPop(el); });
+editor.addEventListener('click', e => {
+  const el = e.target.closest('.tok');
+  if(el) showPop(el);
+  // recovery: after a layout switch KMW can lose its active target while DOM
+  // focus stays in the editor, so clicks fire no focus event and osk.show()
+  // no-ops. A real blur->focus cycle makes KMW re-acquire the target.
+  if(cbKbd.checked && kmwState === 'ready'){
+    const f = document.querySelector('.kmw-osk-frame');
+    if(!f || getComputedStyle(f).display === 'none'){ editor.blur(); editor.focus(); }
+    oskShow(true);
+  }
+});
 window.addEventListener('scroll', hidePop, {passive:true});
 
 // keep content as plain text nodes so caret math stays exact
